@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+                   
+<mapper namespace="com.firsthuanya.payment.data.PaymentLicenseMapper">
+  <!-- cache / -->	  
+  <insert id="insert" parameterType="com.firsthuanya.payment.domain.License">
+    insert into payment_license
+      (payment_id,license)
+    values
+      (#{paymentId},#{licenseNo})
+  </insert>
+  
+  <delete id="delete" parameterType="string">
+    delete from payment_license where payment_id=#{paymentId}
+  </delete>
+</mapper>

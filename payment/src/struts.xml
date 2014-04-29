@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.multipart.maxSize" value="20971520" /> <!-- 设置每次上传文件的最大值为20M,默认值为2M -->
+		
+	<package name="payment" extends="struts-default">		
+		<interceptors>
+			<interceptor name="cacheClearInterceptor" class="com.firsthuanya.payment.action.CacheClearInterceptor"></interceptor>
+			<interceptor name="authorizationInterceptor" class="com.firsthuanya.payment.action.AuthorizationInterceptor"></interceptor>
+			
+			<interceptor-stack name="paymentStack">
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="authorizationInterceptor">
+					<param name="excludeMethods">login,logout</param>
+				</interceptor-ref>
+				<interceptor-ref name="cacheClearInterceptor">
+					<!-- param name="includeMethods">logout</param-->
+				</interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+
+		<default-interceptor-ref name="paymentStack"></default-interceptor-ref>
+
+		<global-results>
+			<result name="login">/expiredLogin.html</result>
+		</global-results>				 
+				                                                               
+		<action name="login" class="com.firsthuanya.payment.action.LoginAction" method="login">
+			<exception-mapping result="exception" exception="java.lang.Exception" />			
+			<result name="input">/login.jsp</result>
+			<result name="success">/main.jsp</result>
+			<result name="exception">/exception.jsp</result>
+		</action>
+		
+		<action name="logout" class="com.firsthuanya.payment.action.LogoutAction" method="logout">
+			<result name="success">/logout.html</result>
+		</action>		
+
+	</package>
+	
+	<package name="paymentJson" extends="json-default">
+		<interceptors>
+			<interceptor name="cacheClearInterceptor" class="com.firsthuanya.payment.action.CacheClearInterceptor"></interceptor>
+			<interceptor name="authorizationInterceptor" class="com.firsthuanya.payment.action.AuthorizationInterceptor"></interceptor>
+			
+			<interceptor-stack name="paymentStack">
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="authorizationInterceptor">
+					<param name="excludeMethods">login,logout</param>
+				</interceptor-ref>
+				<interceptor-ref name="cacheClearInterceptor">
+					<!-- param name="includeMethods">logout</param-->
+				</interceptor-ref>
+			</interceptor-stack>		
+		</interceptors>
+
+		<default-interceptor-ref name="paymentStack"></default-interceptor-ref>
+
+		<global-results>
+			<result name="login">/expiredLogin.html</result>
+		</global-results>
+		
+
+	</package>
+</struts>

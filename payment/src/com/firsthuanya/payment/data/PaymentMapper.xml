@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.firsthuanya.payment.data.PaymentMapper">
+  <!-- cache / -->              
+  <insert id="insert" parameterType="com.firsthuanya.payment.domain.Payment">
+    insert into payment
+      (id,payer,_date,amount)
+    values 
+      (#{id},#{payer},#{date},#{amount})
+  </insert>
+  
+  <delete id="delete" parameterType="string">
+    delete from payment where id=#{id}
+  </delete>
+  
+  <!-- select id="getCount" parameterType="string" resultType="int" >
+  	select count(*) from payment where id=#{id}
+  </select-->
+  
+  <select id="find" parameterType="string" resultMap="paymentResult">
+    select 
+    	id,
+    	payer,
+    	_date as date,
+    	amount 
+    from payment 
+    where id=#{id}
+  </select>  
+
+  <select id="findAll" resultMap="paymentResult">
+    select 
+    	id,
+    	payer,
+    	_date,
+    	amount 
+    from payment 
+    where id=#{id}
+  </select> 
+
+  <resultMap id="paymentResult" type="com.firsthuanya.payment.domain.Payment">
+  	<id property="id" column="id" />
+  	<result property="payer" column="payer" />
+ 	<result property="date" column="_date" />
+ 	<result property="amount" column="amount" />
+  	<collection property="license" column="id" ofType="com.firsthuanya.payment.domain.License" select="selectPaymentLicense"/>  	
+  </resultMap>
+  
+  <select id="selectPaymentLicense" parameterType="string" resultType="com.firsthuanya.payment.domain.License">
+  	select 
+  		payment_id as paymentId,
+  		license	as licenseNo	
+  	from payment_license
+  	where payment_id=#{id}
+  </select>
+</mapper>
