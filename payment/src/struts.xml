@@ -64,6 +64,12 @@
 			<result name="login">/expiredLogin.html</result>
 		</global-results>
 		
-
+		<action name="queryPayment" class="com.firsthuanya.payment.action.PaymentQueryAction" method="queryPayment">
+			<result type="json">
+				<param name="root">results</param>
+				<!--param name="noCache">true</param-->			
+				<!-- param name="includeProperties">results.*\.policyNo</param-->				
+			</result>		
+		</action>
 	</package>
 </struts>

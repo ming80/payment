@@ -56,6 +56,7 @@
           <span>客户付款</span>
           <ul>
             <li><a href="#" onclick="openTab('addPayment.jsp','添加付款记录')">添加付款记录</a></li> 
+            <li><a href="#" onclick="openTab('queryPayments.jsp','查询付款记录')">查询付款记录</a></li> 
 	      </ul>
         </li>
       </ul> 

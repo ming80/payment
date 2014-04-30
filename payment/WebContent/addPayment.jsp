@@ -29,14 +29,15 @@
 		<tr>
 			<td><font size="-1">添加牌照</font></td>
 			<td>
-				<input type="text" id="payer" size="15" style="height:20px;border:1px solid #9D9D9D">
-				<input type="button" value="+" onclick="">
+				<input id="license" type="text" size="15" style="height:20px;border:1px solid #9D9D9D">
+				<input type="button" value="+" onclick="addLicense()">
+				<input type="button" value="×" onclick="deleteLicense()">
 			</td>
 		</tr>
 		<tr>
 			<td></td>
 			<td>			
-				<select size="8" style="width:160px"></select>
+				<select id="licenses" size="8" style="width:200px"></select>
 			</td>
 		</tr>
 		<tr>
@@ -46,5 +47,34 @@
 			</td>
 		</tr>
 	</table>
+	<script type="text/javascript">
+		function addLicense(){
+			if($.trim($('#license').val()) == ''){
+				alert('请先输入牌照号再做添加操作!');
+				return
+			}
+				
+			var isExisted = false;
+			$('#licenses option').each(function(){  
+			    if($(this).text() == $('#license').val())  {			    	
+			    	isExisted = true;
+			    	return;
+			    } 			    		    
+			 }); 
+			
+			if(isExisted){
+				alert("此牌照号已添加!");	
+				return;
+			}				
+			
+			$('#licenses').append('<option>' + $.trim($('#license').val()) + '</option>');
+		}
+		
+		function deleteLicense(){
+			//var selectedIndex = $('#licenses').get(0).selectedIndex;
+			
+			$('#licenses option:selected').remove();
+		}
+	</script>	
 </body>
 </html>

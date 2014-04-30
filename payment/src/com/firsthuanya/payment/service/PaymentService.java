@@ -3,13 +3,18 @@ package com.firsthuanya.payment.service;
 import java.io.IOException;
 import java.io.Reader;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
 
 import com.firsthuanya.payment.data.PaymentLicenseMapper;
 import com.firsthuanya.payment.data.PaymentMapper;
@@ -85,6 +90,18 @@ public class PaymentService {
 		}
 	}
 	
+	public List<Payment> getPayments(Map<String,Object> queryConditions) throws OpenSessionException{
+		SqlSession session = null;
+		try{
+			session = openSession();
+			PaymentMapper mapper = session.getMapper(PaymentMapper.class);
+			return mapper.findPayments(queryConditions);
+		}
+		finally{
+			if(session != null) session.close();
+		}
+	}
+	
 	public List<Payment> getAll() throws OpenSessionException{
 		SqlSession session = openSession();
 		try{
@@ -124,8 +141,14 @@ public class PaymentService {
 //					license);
 //			paymentService.removePayment("id3");
 			
-			payment = paymentService.getPayment("id2");
-			System.out.print(paymentService.hasSuchPayment("id1"));
+			Map<String,Object> condition = new HashMap();
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd ");			
+			
+			condition.put("paymentDateFrom", format.parse("2014-04-29"));
+			condition.put("paymentDateTo", format.parse("2014-04-29 23:59:59"));
+			List<Payment> list = paymentService.getPayments(condition);
+			
+			System.out.print(list.size());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

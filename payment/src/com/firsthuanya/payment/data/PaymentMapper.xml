@@ -37,8 +37,24 @@
     	_date,
     	amount 
     from payment 
-    where id=#{id}
   </select> 
+
+  <select id="findPayments" parameterType="map" resultMap="paymentResult">
+    select 
+    	id,
+    	payer,
+    	_date,
+    	amount 
+    from payment 
+    where 1=1  
+    <if test="paymentDateFrom != null">
+      and _date&gt;=#{paymentDateFrom,javaType=date}
+    </if>
+    <if test="paymentDateTo != null"> 
+      and _date&lt;#{paymentDateTo,javaType=date}
+    </if> 
+    order by _date desc
+  </select>
 
   <resultMap id="paymentResult" type="com.firsthuanya.payment.domain.Payment">
   	<id property="id" column="id" />
